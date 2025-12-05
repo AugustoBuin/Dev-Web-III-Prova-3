@@ -1,0 +1,198 @@
+:root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+
+    /* Azul mais suave */
+    --accent: #4a77ff;
+    --accent-light: #e2e9ff;
+
+    /* Tom de azul suave para textos */
+    --muted: #5c6fa8;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(180deg, #eef3ff, var(--bg));
+    color: #111;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 20px
+}
+
+h1 {
+    color: var(--accent);
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.layout {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    gap: 18px;
+}
+
+.mapa,
+.painel {
+    background: var(--card);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+}
+
+.mesas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.mesa {
+    padding: 14px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.06);
+    font-weight: 700;
+}
+
+.mesa .num {
+    font-size: 18px;
+    color: #0e121b;
+}
+
+.mesa .cap {
+    font-size: 12px;
+    color: #444;
+}
+
+.mesa.disponivel {
+    background: #c5fde0;
+    border: 1px solid #b0f5d0;
+}
+
+.mesa.reservado {
+    background: #ffe89a;
+    border: 1px solid #ffefbf;
+}
+
+.mesa.ocupado {
+    background: #f38a8a;
+    border: 1px solid #ffc2c2;
+}
+
+.mesa.cancelado {
+    background: #f1f3f7;
+    border: 1px solid #e2e4e8;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #d1d9f0;
+    background: transparent;
+}
+
+textarea {
+    min-height: 64px;
+    resize: vertical;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+button {
+    background: var(--accent);
+    color: white;
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #3c66e6;
+}
+
+button#limparBtn {
+    background: #7681a6;
+}
+
+.lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 360px;
+    overflow: auto;
+}
+
+.lista li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #dfe6ff;
+    margin-bottom: 8px;
+    background: #fff;
+}
+
+.lista .meta {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+/* 🔧 Novo estilo dos botões de edição/exclusão */
+.lista .acoes button {
+    margin-left: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: var(--accent-light);
+    border: 1px solid #c7d4ff;
+    font-size: 13px;
+    color: #2d4b9e;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.lista .acoes button:hover {
+    background: #d6e0ff;
+}
+
+#filtros {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+@media (max-width:900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .mesas-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

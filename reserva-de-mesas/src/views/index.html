@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Reservas - Restaurante</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <main class="container">
+        <h1>Sistema de Reservas - Restaurante</h1>
+
+        <section class="layout">
+            <aside class="mapa">
+                <h2>Mapa de Mesas</h2>
+                <div id="mesasContainer" class="mesas-grid"></div>
+            </aside>
+
+            <section class="painel">
+                <h2>Criar / Editar Reserva</h2>
+                <form id="reservaForm">
+                    <input type="hidden" id="reservaId" />
+                    <label>Nome do cliente<input id="cliente" required /></label>
+                    <label>Contato<input id="contato" required /></label>
+                    <label>Mesa
+                        <select id="mesaSelect" required></select>
+                    </label>
+                    <label>Pessoas<input id="pessoas" type="number" min="1" required /></label>
+                    <label>Data e hora
+                        <input id="dataHora" type="datetime-local" required />
+                    </label>
+                    <label>Observações
+                        <textarea id="observacoes"></textarea>
+                    </label>
+                    <div class="actions">
+                        <button type="submit">Salvar Reserva</button>
+                        <button type="button" id="limparBtn">Limpar</button>
+                    </div>
+                </form>
+
+                <h2>Reservas</h2>
+                <div id="filtros">
+                    <input id="filtroCliente" placeholder="Filtrar por cliente" />
+                    <select id="filtroStatus">
+                        <option value="">Todos</option>
+                        <option value="reservado">Reservado</option>
+                        <option value="ocupado">Ocupado</option>
+                        <option value="finalizado">Finalizado</option>
+                        <option value="cancelado">Cancelado</option>
+                    </select>
+                    <button id="btnFiltrar">Filtrar</button>
+                </div>
+
+                <ul id="listaReservas" class="lista"></ul>
+            </section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
