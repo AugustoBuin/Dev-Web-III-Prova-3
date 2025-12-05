@@ -32,15 +32,9 @@ function formatDateLocal(dateStr) {
     return d.toLocaleString();
 }
 
-function getStatusForReserva(r) {
-    return r.status || "reservado";
-}
-
 function mesaStatusColor(mesaNumero) {
-    // se existir alguma reserva ocupada para a mesa num -> vermelho
-    const now = new Date();
     const relevant = reservas.filter(r => r.mesa === mesaNumero && r.status !== "cancelado");
-    // preferir ocupado > reservado > finalizado
+
     for (const r of relevant) {
         if (r.status === "ocupado") return "ocupado";
     }
@@ -61,7 +55,6 @@ function renderMesas() {
         div.className = `mesa ${st}`;
         div.innerHTML = `<div class="num">Mesa ${m.numero}</div><div class="cap">${m.capacidade} lugares</div>`;
         div.onclick = () => {
-            // preencher form com mesa selecionada
             mesaSelect.value = m.numero;
             window.scrollTo({ top: 0, behavior: "smooth" });
         };
@@ -81,18 +74,26 @@ function preencherMesaSelect() {
 
 function renderReservas() {
     listaReservas.innerHTML = "";
+
     reservas.forEach(r => {
         const li = document.createElement("li");
+
+        const isLocked = r.status === "cancelado" || r.status === "finalizado";
+
         li.innerHTML = `
-      <div>
-        <div><strong>${r.cliente}</strong> — Mesa ${r.mesa} — ${r.pessoas} pessoas</div>
-        <div class="meta">${formatDateLocal(r.dataHora)} • ${r.status}</div>
-      </div>
-      <div class="acoes">
-        <button onclick="editarReserva('${r._id}')">Editar</button>
-        <button onclick="cancelarReserva('${r._id}')">Cancelar</button>
-      </div>
-    `;
+          <div>
+            <div><strong>${r.cliente}</strong> — Mesa ${r.mesa} — ${r.pessoas} pessoas</div>
+            <div class="meta">${formatDateLocal(r.dataHora)} • ${r.status}</div>
+          </div>
+
+          <div class="acoes">
+            ${isLocked ? "" : `
+                <button onclick="editarReserva('${r._id}')">Editar</button>
+                <button onclick="cancelarReserva('${r._id}')">Cancelar</button>
+            `}
+          </div>
+        `;
+
         listaReservas.appendChild(li);
     });
 }
@@ -107,9 +108,12 @@ window.editarReserva = async function (id) {
     document.getElementById("contato").value = r.contato;
     document.getElementById("mesaSelect").value = r.mesa;
     document.getElementById("pessoas").value = r.pessoas;
+
     const dt = new Date(r.dataHora);
-    // format to datetime-local yyyy-MM-ddThh:mm
-    const local = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    const local = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 16);
+
     document.getElementById("dataHora").value = local;
     document.getElementById("observacoes").value = r.observacoes || "";
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -130,6 +134,7 @@ window.cancelarReserva = async function (id) {
 reservaForm.addEventListener("submit", async (e) => {
     e.preventDefault();
     const id = reservaIdInput.value;
+
     const payload = {
         cliente: document.getElementById("cliente").value,
         contato: document.getElementById("contato").value,
@@ -182,10 +187,8 @@ btnFiltrar.addEventListener("click", () => {
     fetchReservas(q);
 });
 
-// inicialização
 (async function init() {
     await fetchMesas();
     await fetchReservas();
-    // atualizar periodicamente (opcional)
     setInterval(() => fetchReservas(), 30 * 1000);
 })();
